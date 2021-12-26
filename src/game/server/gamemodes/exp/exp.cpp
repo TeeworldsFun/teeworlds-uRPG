@@ -10,6 +10,8 @@
 #include <game/server/entities/flag.h>
 #include <game/server/entities/pickup.h>
 
+#include <game/server/languages.h>
+
 #include "exp.h"
 
 CGameControllerEXP::CGameControllerEXP(class CGameContext *pGameServer)
@@ -259,133 +261,300 @@ bool CGameControllerEXP::OnEntity(int Index, vec2 Pos)
 
 bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 {
-	if(!strncmp(aMsg, "/info", 5) || !strncmp(aMsg, "!info", 5) || !strncmp(aMsg, "/help", 5))
+	if(GameServer()->m_apPlayers[ClientID]->m_Language == LANG_EN)
 	{
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		GameServer()->SendChatTarget(ClientID, "                                        EXPlorer");
-		GameServer()->SendChatTarget(ClientID, " ");
-		GameServer()->SendChatTarget(ClientID, "Version 1.0 | by xush', original idea and mod by Choupom.");
-		GameServer()->SendChatTarget(ClientID, "You have to explore the map, fight monsters, collect items...");
-		GameServer()->SendChatTarget(ClientID, "Kill a monster to earn an Item (say /items for more info).");
-		GameServer()->SendChatTarget(ClientID, " ");
-		GameServer()->SendChatTarget(ClientID, "Say /cmdlist for the command list.");
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		return true;
-	}
-	else if(!strncmp(aMsg, "/top5", 5))
-	{
-		GameServer()->Top5(g_Config.m_SvMap, ClientID);
-		return true;
-	}
-	else if(!strncmp(aMsg, "/rank", 5))
-	{
-		GameServer()->Rank(g_Config.m_SvMap, Server()->ClientName(ClientID), ClientID);
-		return true;
-	}
-	else if(!strncmp(aMsg, "/cmdlist", 8) || !strncmp(aMsg, "/cmd", 4))
-	{
-		GameServer()->SendChatTarget(ClientID, " ");
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		GameServer()->SendChatTarget(ClientID, "                                    COMMAND LIST");
-		GameServer()->SendChatTarget(ClientID, "");
-		GameServer()->SendChatTarget(ClientID, "'/info': Get info about the modification.");
-		GameServer()->SendChatTarget(ClientID, "'/top5': View the top 5 players.");
-		GameServer()->SendChatTarget(ClientID, "'/items': Get info about the items.");
-		GameServer()->SendChatTarget(ClientID, "'/new': Restart the game.");
-		GameServer()->SendChatTarget(ClientID, "'/bind': Learn how to bind a key to use an item.");
-		GameServer()->SendChatTarget(ClientID, "'/game': Show your weapons, kills, armor, etc.");
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		return true;
-	}
-	else if(!strncmp(aMsg, "/items", 6))
-	{
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		GameServer()->SendChatTarget(ClientID, "                                           ITEMS");
-		GameServer()->SendChatTarget(ClientID, " ");
-		GameServer()->SendChatTarget(ClientID, "Check out '/bind' to learn how to bind items.");
-		GameServer()->SendChatTarget(ClientID, "Weapons: You keep it when you have it.");
-		GameServer()->SendChatTarget(ClientID, "Life: You can use it to respawn where you died.");
-		GameServer()->SendChatTarget(ClientID, "Minor Potion: Use it to get full health.");
-		GameServer()->SendChatTarget(ClientID, "Greater Potion: Use it to get full health and full armor.");
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		return true;
-	}
-	else if(!strncmp(aMsg, "/game", 5))
-	{
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		GameServer()->SendChatTarget(ClientID, "                                            GAME");
-		GameServer()->SendChatTarget(ClientID, " ");
-		
-		char aBuf[256] = {0};
-		if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons == 0)
-			str_format(aBuf, sizeof(aBuf), "Weapons: none", aBuf);
-		for(int i = 1; i < NUM_WEAPONS+2; i++)
+		if(!strncmp(aMsg, "/info", 5) || !strncmp(aMsg, "!info", 5) || !strncmp(aMsg, "/help", 5))
 		{
-			if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow(2, i))
-			{
-				if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "Weapons: %s", GetWeaponName(i));
-				else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
-			}
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                        EXPlorer");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "Version 1.1 | by xush', original idea and mod by Choupom.");
+			GameServer()->SendChatTarget(ClientID, "You have to explore the map, fight monsters, collect items...");
+			GameServer()->SendChatTarget(ClientID, "Kill a monster to earn an Item (say /items for more info).");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "Say /cmdlist for the command list.");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
 		}
-		GameServer()->SendChatTarget(ClientID, aBuf);
+		else if(!strncmp(aMsg, "/top5", 5))
+		{
+			GameServer()->Top5(g_Config.m_SvMap, ClientID);
+			return true;
+		}
+		else if(!strncmp(aMsg, "/rank", 5))
+		{
+			GameServer()->Rank(g_Config.m_SvMap, Server()->ClientName(ClientID), ClientID);
+			return true;
+		}
+		else if(!strncmp(aMsg, "/cmdlist", 8) || !strncmp(aMsg, "/cmd", 4))
+		{
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                    COMMAND LIST");
+			GameServer()->SendChatTarget(ClientID, "");
+			GameServer()->SendChatTarget(ClientID, "'/info': Get info about the modification.");
+			GameServer()->SendChatTarget(ClientID, "'/top5': View the top 5 players.");
+			GameServer()->SendChatTarget(ClientID, "'/items': Get info about the items.");
+			GameServer()->SendChatTarget(ClientID, "'/new': Restart the game.");
+			GameServer()->SendChatTarget(ClientID, "'/bind': Learn how to bind a key to use an item.");
+			GameServer()->SendChatTarget(ClientID, "'/game': Show your weapons, kills, armor, etc.");
+			GameServer()->SendChatTarget(ClientID, "'/lang': Change you language.");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/items", 6))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                           ITEMS");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "Check out '/bind' to learn how to bind items.");
+			GameServer()->SendChatTarget(ClientID, "Weapons: You keep it when you have it.");
+			GameServer()->SendChatTarget(ClientID, "Life: You can use it to respawn where you died.");
+			GameServer()->SendChatTarget(ClientID, "Minor Potion: Use it to get full health.");
+			GameServer()->SendChatTarget(ClientID, "Greater Potion: Use it to get full health and full armor.");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/game", 5))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                            GAME");
+			GameServer()->SendChatTarget(ClientID, " ");
 		
-		str_format(aBuf, sizeof(aBuf), "Armor: %d", GameServer()->m_apPlayers[ClientID]->m_GameExp.m_ArmorMax);
-		GameServer()->SendChatTarget(ClientID, aBuf);
+			char aBuf[256] = {0};
+			if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons == 0)
+				str_format(aBuf, sizeof(aBuf), "Weapons: none", aBuf);
+			for(int i = 1; i < NUM_WEAPONS+2; i++)
+			{
+				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow(2, i))
+				{
+					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "Weapons: %s", GetWeaponName(i));
+					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
+				}
+			}
+			GameServer()->SendChatTarget(ClientID, aBuf);
 		
-		str_format(aBuf, sizeof(aBuf), "Kills: %d", GameServer()->m_apPlayers[ClientID]->m_Score);
-		GameServer()->SendChatTarget(ClientID, aBuf);
-		
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		return true;
-	}
-	
-	else if(!strncmp(aMsg, "/bind", 5))
-	{
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		GameServer()->SendChatTarget(ClientID, "                              BIND DOCUMENTATION");
-		GameServer()->SendChatTarget(ClientID, "");
-		GameServer()->SendChatTarget(ClientID, "1) Open the Local Console (F1).");
-		GameServer()->SendChatTarget(ClientID, "2) Type \"bind <key> say <item>\"");
-		GameServer()->SendChatTarget(ClientID, "Replace <key> by the key you want to press.");
-		GameServer()->SendChatTarget(ClientID, "Replace <item> by the item: life, minor or greater.");
-		GameServer()->SendChatTarget(ClientID, "Example: \"bind l say life\"");
-		GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		return true;
-	}
-	
-	else if(!strncmp(aMsg, "/new", 4))
-	{
-		RestartClient(ClientID);
-		return true;
-	}
-	
-	else if(!strncmp(aMsg, "/life", 5) || !strncmp(aMsg, "life", 4))
-	{
-		Use(ClientID, "Life");
-		return true;
-	}
+			str_format(aBuf, sizeof(aBuf), "Armor: %d", GameServer()->m_apPlayers[ClientID]->m_GameExp.m_ArmorMax);
+			GameServer()->SendChatTarget(ClientID, aBuf);
 
-	else if(!strncmp(aMsg, "/minor", 6) || !strncmp(aMsg, "minor", 5))
-	{
-		Use(ClientID, "Minor Potion");
-		return true;
-	}
+			str_format(aBuf, sizeof(aBuf), "Kills: %d", GameServer()->m_apPlayers[ClientID]->m_Score);
+			GameServer()->SendChatTarget(ClientID, aBuf);
 
-	else if(!strncmp(aMsg, "/greater", 8) || !strncmp(aMsg, "greater", 7))
-	{
-		Use(ClientID, "Greater Potion");
-		return true;
-	}
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
 	
-	else if(!strncmp(aMsg, "/", 1))
-	{
-		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Unknown command: '%s'", aMsg);
-		GameServer()->SendChatTarget(ClientID, aBuf);
-		return true;
+		else if(!strncmp(aMsg, "/bind", 5))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                              BIND DOCUMENTATION");
+			GameServer()->SendChatTarget(ClientID, "");
+			GameServer()->SendChatTarget(ClientID, "1) Open the Local Console (F1).");
+			GameServer()->SendChatTarget(ClientID, "2) Type \"bind <key> say <item>\"");
+			GameServer()->SendChatTarget(ClientID, "Replace <key> by the key you want to press.");
+			GameServer()->SendChatTarget(ClientID, "Replace <item> by the item: life, minor or greater.");
+			GameServer()->SendChatTarget(ClientID, "Example: \"bind l say life\"");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/lang", 5))
+		{
+			if(!strncmp(aMsg, "/lang en", 8))
+			{
+				GameServer()->SendChatTarget(ClientID, "What r u doing?");
+			}
+			else if(!strncmp(aMsg, "/lang cn", 8))
+			{
+				GameServer()->SendChatTarget(ClientID, "语言切换到中文");
+				GameServer()->m_apPlayers[ClientID]->SwitchLanguage(ClientID, (int)LANG_CN);
+			}
+			else
+			{
+				GameServer()->SendChatTarget(ClientID, "Unsupport language，中文(cn) English(en) 输入/lang cn 切换为中文");
+			};
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/new", 4))
+		{
+			RestartClient(ClientID);
+			return true;
+		}
+	
+		else if(!strncmp(aMsg, "/life", 5) || !strncmp(aMsg, "life", 4))
+		{
+			Use(ClientID, "Life");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/minor", 6) || !strncmp(aMsg, "minor", 5))
+		{
+			Use(ClientID, "Minor Potion");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/greater", 8) || !strncmp(aMsg, "greater", 7))
+		{
+			Use(ClientID, "Greater Potion");
+			return true;
+		}
+	
+		else if(!strncmp(aMsg, "/", 1))
+		{
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf), "Unknown command: '%s'", aMsg);
+			GameServer()->SendChatTarget(ClientID, aBuf);
+			return true;
+		}
+		else
+			return false;
 	}
-	else
-		return false;
+	else if(GameServer()->m_apPlayers[ClientID]->m_Language == LANG_CN)
+	{
+		if(!strncmp(aMsg, "/info", 5))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                        EXPlorer");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "版本 1.1 | 制作人: xush', 老版本制作人Choupom.");
+			GameServer()->SendChatTarget(ClientID, "你需要探索这张地图，与怪物战斗，收集物品...");
+			GameServer()->SendChatTarget(ClientID, "杀死怪物有几率获得物品（按T输入/item来获取更多帮助）");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "按T输入/cmdlist查看指令列表");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/top5", 5))
+		{
+			GameServer()->Top5(g_Config.m_SvMap, ClientID);
+			return true;
+		}
+		else if(!strncmp(aMsg, "/rank", 5))
+		{
+			GameServer()->Rank(g_Config.m_SvMap, Server()->ClientName(ClientID), ClientID);
+			return true;
+		}
+		else if(!strncmp(aMsg, "/cmdlist", 8) || !strncmp(aMsg, "/cmd", 4))
+		{
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                    指令列表");
+			GameServer()->SendChatTarget(ClientID, "");
+			GameServer()->SendChatTarget(ClientID, "'/info': 获取关于这个模式的帮助.");
+			GameServer()->SendChatTarget(ClientID, "'/top5': 展示排名前五的玩家列表.");
+			GameServer()->SendChatTarget(ClientID, "'/items': 获得关于武器的帮助.");
+			GameServer()->SendChatTarget(ClientID, "'/new': 重新开始游戏.");
+			GameServer()->SendChatTarget(ClientID, "'/bind': 学习如何绑定一个按键来使用物品.");
+			GameServer()->SendChatTarget(ClientID, "'/game': 显示你有哪些武器，多少护甲，杀了多少怪物.");
+			GameServer()->SendChatTarget(ClientID, "'/lang': 切换游戏语言");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/items", 6))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                           物品");
+			GameServer()->SendChatTarget(ClientID, " ");
+			GameServer()->SendChatTarget(ClientID, "注意，输入'/bind'学习如何绑定按键来快速使用物品.");
+			GameServer()->SendChatTarget(ClientID, "武器: 如果你有这个武器那么你就可以使用它.");
+			GameServer()->SendChatTarget(ClientID, "Life: 在你死后的几秒内使用它就可以原地复活.");
+			GameServer()->SendChatTarget(ClientID, "Minor Potion: 使用它可以瞬间恢复满血.");
+			GameServer()->SendChatTarget(ClientID, "Greater Potion: 使用它可以瞬间恢复满血满甲.");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+		else if(!strncmp(aMsg, "/game", 5))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                                            状态");
+			GameServer()->SendChatTarget(ClientID, " ");
+
+			char aBuf[256] = {0};
+			if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons == 0)
+			str_format(aBuf, sizeof(aBuf), "武器: 没有", aBuf);
+			for(int i = 1; i < NUM_WEAPONS+2; i++)
+			{
+				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow(2, i))
+				{
+					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "武器: %s", GetWeaponName(i));
+					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
+				}
+			}
+			GameServer()->SendChatTarget(ClientID, aBuf);
+
+			str_format(aBuf, sizeof(aBuf), "甲: %d", GameServer()->m_apPlayers[ClientID]->m_GameExp.m_ArmorMax);
+			GameServer()->SendChatTarget(ClientID, aBuf);
+			str_format(aBuf, sizeof(aBuf), "击杀数: %d", GameServer()->m_apPlayers[ClientID]->m_Score);
+			GameServer()->SendChatTarget(ClientID, aBuf);
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/bind", 5))
+		{
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			GameServer()->SendChatTarget(ClientID, "                              按键绑定文档！");
+			GameServer()->SendChatTarget(ClientID, "");
+			GameServer()->SendChatTarget(ClientID, "1) 打开本地控制台 (F1打开).");
+			GameServer()->SendChatTarget(ClientID, "2) 输入 \"bind 按键 say /物品名\"");
+			GameServer()->SendChatTarget(ClientID, "在按键栏输入你想要的按键");
+			GameServer()->SendChatTarget(ClientID, "在物品名栏输入你想使用的物品: life, minor 或者 greater.");
+			GameServer()->SendChatTarget(ClientID, "示例: \"bind l say life\"");
+			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/new", 4))
+		{
+			RestartClient(ClientID);
+			return true;
+		}	
+	
+		else if(!strncmp(aMsg, "/life", 5) || !strncmp(aMsg, "life", 4))
+		{
+			Use(ClientID, "Life");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/minor", 6) || !strncmp(aMsg, "minor", 5))
+		{
+			Use(ClientID, "Minor Potion");
+			return true;
+		}
+
+		else if(!strncmp(aMsg, "/greater", 8) || !strncmp(aMsg, "greater", 7))
+		{
+			Use(ClientID, "Greater Potion");
+			return true;
+		}	
+
+		else if(!strncmp(aMsg, "/lang", 5))
+		{
+			if(!strncmp(aMsg, "/lang en", 8))
+			{
+				GameServer()->SendChatTarget(ClientID, "Language Switch to English");
+				GameServer()->m_apPlayers[ClientID]->SwitchLanguage(ClientID, (int)LANG_EN);
+			}
+			else if(!strncmp(aMsg, "/lang cn", 8))
+			{
+				GameServer()->SendChatTarget(ClientID, "属于是了属于是");
+			}
+			else
+			{
+				GameServer()->SendChatTarget(ClientID, "不支持的语言，暂时只支持：中文(cn) 英文(en) type \"/lang en\" Switch language to english");
+			};
+			return true;
+		}
+		else if(!strncmp(aMsg, "/", 1))
+		{
+			char aBuf[256];
+			str_format(aBuf, sizeof(aBuf), "未知的指令: '%s'", aMsg);
+			GameServer()->SendChatTarget(ClientID, aBuf);
+			return true;
+		}
+		else
+			return false;
+	}
 }
 
 void CGameControllerEXP::StartClient(int ID)
@@ -404,12 +573,11 @@ void CGameControllerEXP::StopClient(int ID)
 	int sec = GameServer()->m_apPlayers[ID]->m_GameExp.m_Time % 60;
 	char buf[512];
 	str_format(buf, sizeof(buf), "'%s' finished in %d minutes %d seconds with %d kills. Good Game!", Server()->ClientName(ID), min, sec, GameServer()->m_apPlayers[ID]->m_GameExp.m_Kills);
-	GameServer()->SendChatTarget(-1, buf);
-
+		GameServer()->SendChatTarget(-1, buf);
 	GameServer()->SaveRank(g_Config.m_SvMap, Server()->ClientName(ID), GameServer()->m_apPlayers[ID]->m_GameExp.m_Time, GameServer()->m_apPlayers[ID]->m_GameExp.m_Kills);
 	
 	bool GotFreezer = false;
-	if(GameServer()->m_apPlayers[ID]->m_GameExp.m_Weapons & (int)pow(2, WEAPON_FREEZER))
+	if(GameServer()->m_apPlayers[ID]->m_GameExp.m_Weapons & (int)pow(2, (int)WEAPON_FREEZER))
 		GotFreezer = true;
 	
 	RestartClient(ID);
@@ -433,24 +601,47 @@ void CGameControllerEXP::UpdateGame(int ID)
 }
 
 const char *CGameControllerEXP::GetWeaponName(int WID)
-{
-	if(WID == WEAPON_HAMMER)
-		return "Hammer";
-	else if(WID == WEAPON_GUN)
-		return "Gun";
-	else if(WID == WEAPON_SHOTGUN)
-		return "Shotgun";
-	else if(WID == WEAPON_GRENADE)
-		return "Grenade";
-	else if(WID == WEAPON_RIFLE)
-		return "Rifle";
-	else if(WID == WEAPON_NINJA)
-		return "Ninja";
-	else if(WID == WEAPON_KAMIKAZE)
-		return "Kamikaze";
-	else if(WID == WEAPON_FREEZER)
-		return "Freezer";
-	return "?";
+{	
+	//if(GameServer()->m_apPlayers[-1]->m_Language == LANG_EN)
+	//{
+		if(WID == WEAPON_HAMMER)
+			return "Hammer";
+		else if(WID == WEAPON_GUN)
+			return "Gun";
+		else if(WID == WEAPON_SHOTGUN)
+			return "Shotgun";
+		else if(WID == WEAPON_GRENADE)
+			return "Grenade";
+		else if(WID == WEAPON_RIFLE)
+			return "Rifle";
+		else if(WID == WEAPON_NINJA)
+			return "Ninja";
+		else if(WID == WEAPON_KAMIKAZE)
+			return "Kamikaze";
+		else if(WID == WEAPON_FREEZER)
+			return "Freezer";
+		return "?";
+	//} 
+	/*else if(GameServer()->m_apPlayers[-1]->m_Language == LANG_CN)
+	{
+		if(WID == WEAPON_HAMMER)
+			return "锤子";
+		else if(WID == WEAPON_GUN)
+			return "手枪";
+		else if(WID == WEAPON_SHOTGUN)
+			return "散弹枪";
+		else if(WID == WEAPON_GRENADE)
+			return "榴弹发射器";
+		else if(WID == WEAPON_RIFLE)
+			return "激光枪";
+		else if(WID == WEAPON_NINJA)
+			return "忍者";
+		else if(WID == WEAPON_KAMIKAZE)
+			return "神风牌武士刀";
+		else if(WID == WEAPON_FREEZER)
+			return "传奇冰冻器";
+		return "?";
+	};*/
 }
 
 bool CGameControllerEXP::Use(int ClientID, const char *aCommand)

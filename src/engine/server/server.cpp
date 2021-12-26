@@ -832,7 +832,7 @@ void CServer::ProcessClientPacket(CNetChunk *pPacket)
 				if(g_Config.m_Password[0] != 0 && str_comp(g_Config.m_Password, pPassword) != 0)
 				{
 					// wrong password
-					m_NetServer.Drop(ClientID, "Wrong password");
+					m_NetServer.Drop(ClientID, "Oh no, bad password");
 					return;
 				}
 
@@ -986,7 +986,7 @@ void CServer::ProcessClientPacket(CNetChunk *pPacket)
 			{
 				if(g_Config.m_SvRconPassword[0] == 0 && g_Config.m_SvRconModPassword[0] == 0)
 				{
-					SendRconLine(ClientID, "No rcon password set on server. Set sv_rcon_password and/or sv_rcon_mod_password to enable the remote console.");
+					SendRconLine(ClientID, "Oh NO! Server hoster forget to set rcon password!");
 				}
 				else if(g_Config.m_SvRconPassword[0] && str_comp(pPw, g_Config.m_SvRconPassword) == 0)
 				{
@@ -1024,19 +1024,19 @@ void CServer::ProcessClientPacket(CNetChunk *pPacket)
 				{
 					m_aClients[ClientID].m_AuthTries++;
 					char aBuf[128];
-					str_format(aBuf, sizeof(aBuf), "Wrong password %d/%d.", m_aClients[ClientID].m_AuthTries, g_Config.m_SvRconMaxTries);
+					str_format(aBuf, sizeof(aBuf), "Bad password %d/%d.", m_aClients[ClientID].m_AuthTries, g_Config.m_SvRconMaxTries);
 					SendRconLine(ClientID, aBuf);
 					if(m_aClients[ClientID].m_AuthTries >= g_Config.m_SvRconMaxTries)
 					{
 						if(!g_Config.m_SvRconBantime)
-							m_NetServer.Drop(ClientID, "Too many remote console authentication tries");
+							m_NetServer.Drop(ClientID, "Fuck you!!");
 						else
 							m_ServerBan.BanAddr(m_NetServer.ClientAddr(ClientID), g_Config.m_SvRconBantime*60, "Too many remote console authentication tries");
 					}
 				}
 				else
 				{
-					SendRconLine(ClientID, "Wrong password.");
+					SendRconLine(ClientID, "BAD PASSWORD.");
 				}
 			}
 		}

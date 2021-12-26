@@ -17,6 +17,9 @@ public:
 	CPlayer(CGameContext *pGameServer, int ClientID, int Team);
 	~CPlayer();
 
+	int m_Language;
+	int GetPlayerLanguage(int ClientID);
+	void SwitchLanguage(int ClientID, int Language);
 	void Init(int CID);
 
 	void TryRespawn();

@@ -9,6 +9,7 @@
 #include <game/version.h>
 #include <game/collision.h>
 #include <game/gamecore.h>
+#include "languages.h"
 #include "gamemodes/dm.h"
 #include "gamemodes/tdm.h"
 #include "gamemodes/ctf.h"
@@ -458,6 +459,7 @@ void CGameContext::SwapTeams()
 	(void)m_pController->CheckTeamBalance();
 }
 
+
 static const char *s_apHints[] = {
 		"If you don't progress, try to kill monsters and turrets to obtain stronger items.",
 		"Sometimes it is smart to just rush to a flag/checkpoint.",
@@ -605,6 +607,7 @@ void CGameContext::OnClientPredictedInput(int ClientID, void *pInput)
 
 void CGameContext::OnClientEnter(int ClientID)
 {
+	m_apPlayers[ClientID]->SwitchLanguage(ClientID, (int)LANG_EN);
 	//world.insert_entity(&players[client_id]);
 	m_apPlayers[ClientID]->Respawn();
 	char aBuf[512];
@@ -628,6 +631,7 @@ void CGameContext::OnClientConnected(int ClientID, bool Bot)
   		return;
 
   	SendChatTarget(ClientID, "Welcome to the EXPlorer mod. Say '/info' for more info about EXPlorer.");
+	SendChatTarget(ClientID, "欢迎来到EXPlorer，输入/info获取更多关于EXPlorer的帮助.");
 
 	(void)m_pController->CheckTeamBalance();
 
