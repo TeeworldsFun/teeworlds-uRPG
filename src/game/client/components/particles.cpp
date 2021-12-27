@@ -176,7 +176,7 @@ void CParticles::RenderGroup(int Group)
 			m_aParticles[i].m_Color.r,
 			m_aParticles[i].m_Color.g,
 			m_aParticles[i].m_Color.b,
-			m_aParticles[i].m_Color.a); // pow(a, 0.75f) *
+			m_aParticles[i].m_Color.a); // pow((int)a, 0.75f) *
 
 		IGraphics::CQuadItem QuadItem(p.x, p.y, Size, Size);
 		Graphics()->QuadsDraw(&QuadItem, 1);

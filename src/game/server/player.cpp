@@ -69,9 +69,9 @@ void CPlayer::Tick()
 	}
 	else
 	{
-		m_Latency.m_Avg = 420;
+		m_Latency.m_Avg = 255;
 		m_Latency.m_Max = 420;
-		m_Latency.m_Min = 420;
+		m_Latency.m_Min = 100;
 	}
 
 	if(!GameServer()->m_World.m_Paused)
@@ -414,32 +414,32 @@ void CPlayer::LoadGame(vec2 SpawnPos, int Flag, int Kills, int Time, int Armor, 
 	m_GameExp.m_Kills = Kills;
 	m_Score = Kills;
 	m_GameExp.m_Time = Time;
-	if(w & (int)pow(2, (int)WEAPON_GUN))
+	if(w & (int)pow((int)2, (int)WEAPON_GUN))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_GUN].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_GUN].m_Ammo = g_pData->m_Weapons.m_aId[WEAPON_GUN].m_Maxammo;
 	}
-	if(w & (int)pow(2, (int)WEAPON_SHOTGUN))
+	if(w & (int)pow((int)2, (int)WEAPON_SHOTGUN))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_SHOTGUN].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_SHOTGUN].m_Ammo = g_pData->m_Weapons.m_aId[WEAPON_SHOTGUN].m_Maxammo;
 	}
-	if(w & (int)pow(2, (int)WEAPON_GRENADE))
+	if(w & (int)pow((int)2, (int)WEAPON_GRENADE))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_GRENADE].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_GRENADE].m_Ammo = g_pData->m_Weapons.m_aId[WEAPON_GRENADE].m_Maxammo;
 	}
-	if(w & (int)pow(2, (int)WEAPON_RIFLE))
+	if(w & (int)pow((int)2, (int)WEAPON_RIFLE))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_RIFLE].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_RIFLE].m_Ammo = g_pData->m_Weapons.m_aId[WEAPON_RIFLE].m_Maxammo;
 	}
-	if(w & (int)pow(2, (int)WEAPON_KAMIKAZE))
+	if(w & (int)pow((int)2, (int)WEAPON_KAMIKAZE))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_KAMIKAZE].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_KAMIKAZE].m_Ammo = -1;
 	}
-	if(w & (int)pow(2, (int)WEAPON_FREEZER))
+	if(w & (int)pow((int)2, (int)WEAPON_FREEZER))
 	{
 		m_pCharacter->m_aWeapons[WEAPON_FREEZER].m_Got = true;
 		m_pCharacter->m_aWeapons[WEAPON_FREEZER].m_Ammo = -1;
@@ -452,19 +452,19 @@ void CPlayer::LoadGame(vec2 SpawnPos, int Flag, int Kills, int Time, int Armor, 
 
 bool CPlayer::GetWeapon(int WID)
 {
-	if(m_GameExp.m_Weapons & (int)pow(2, WID))
+	if(m_GameExp.m_Weapons & (int)pow((int)2, WID))
 		return false;
 	
-	if(WID == WEAPON_RIFLE && m_GameExp.m_Weapons & (int)pow(2, (int)WEAPON_FREEZER))
+	if(WID == WEAPON_RIFLE && m_GameExp.m_Weapons & (int)pow((int)2, (int)WEAPON_FREEZER))
 		return false;
 	if(WID == WEAPON_FREEZER)
 	{
-		m_GameExp.m_Weapons &= ~(int)pow(2, (int)WEAPON_RIFLE);
+		m_GameExp.m_Weapons &= ~(int)pow((int)2, (int)WEAPON_RIFLE);
 		if(m_pCharacter)
 			m_pCharacter->m_aWeapons[WEAPON_RIFLE].m_Got = false;
 	}
 
-	m_GameExp.m_Weapons |= (int)pow(2, WID);
+	m_GameExp.m_Weapons |= (int)pow((int)2, WID);
 	m_pCharacter->GiveWeapon(WID, 10);
 	
 	if(m_pCharacter)

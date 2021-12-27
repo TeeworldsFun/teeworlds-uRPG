@@ -11,6 +11,7 @@
 #include <game/server/entities/pickup.h>
 
 #include <game/server/languages.h>
+#include <game/version.h>
 
 #include "exp.h"
 
@@ -38,7 +39,7 @@ CGameControllerEXP::CGameControllerEXP(class CGameContext *pGameServer)
 		m_Boss.m_apShieldIcons[i] = NULL;
 
 	// force config
-	g_Config.m_SvMaxClients = 6;
+	g_Config.m_SvMaxClients = 47;
 	g_Config.m_SvScorelimit = 1;
 	g_Config.m_SvTeamdamage = 0;
 }
@@ -265,10 +266,12 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 	{
 		if(!strncmp(aMsg, "/info", 5) || !strncmp(aMsg, "!info", 5) || !strncmp(aMsg, "/help", 5))
 		{
+			char aBuf[256] = {0};
 			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			GameServer()->SendChatTarget(ClientID, "                                        EXPlorer");
 			GameServer()->SendChatTarget(ClientID, " ");
-			GameServer()->SendChatTarget(ClientID, "Version 1.1 | by xush', original idea and mod by Choupom.");
+			str_format(aBuf, sizeof(aBuf), "Version %d | by xush', original idea and mod by Choupom.", GAME_EXP_VERSION);
+			GameServer()->SendChatTarget(ClientID, aBuf);
 			GameServer()->SendChatTarget(ClientID, "You have to explore the map, fight monsters, collect items...");
 			GameServer()->SendChatTarget(ClientID, "Kill a monster to earn an Item (say /items for more info).");
 			GameServer()->SendChatTarget(ClientID, " ");
@@ -326,7 +329,7 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 				str_format(aBuf, sizeof(aBuf), "Weapons: none", aBuf);
 			for(int i = 1; i < NUM_WEAPONS+2; i++)
 			{
-				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow(2, i))
+				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow((int)2, i))
 				{
 					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "Weapons: %s", GetWeaponName(i));
 					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
@@ -413,10 +416,12 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 	{
 		if(!strncmp(aMsg, "/info", 5))
 		{
+			char aBuf[256] = {0};
 			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 			GameServer()->SendChatTarget(ClientID, "                                        EXPlorer");
 			GameServer()->SendChatTarget(ClientID, " ");
-			GameServer()->SendChatTarget(ClientID, "版本 1.1 | 制作人: xush', 老版本制作人Choupom.");
+			str_format(aBuf, sizeof(aBuf), "版本 %d | 制作人: xush', 老版本制作人Choupom.", GAME_EXP_VERSION);
+			GameServer()->SendChatTarget(ClientID, aBuf);
 			GameServer()->SendChatTarget(ClientID, "你需要探索这张地图，与怪物战斗，收集物品...");
 			GameServer()->SendChatTarget(ClientID, "杀死怪物有几率获得物品（按T输入/item来获取更多帮助）");
 			GameServer()->SendChatTarget(ClientID, " ");
@@ -474,7 +479,7 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 			str_format(aBuf, sizeof(aBuf), "武器: 没有", aBuf);
 			for(int i = 1; i < NUM_WEAPONS+2; i++)
 			{
-				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow(2, i))
+				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow((int)2, i))
 				{
 					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "武器: %s", GetWeaponName(i));
 					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
@@ -577,7 +582,7 @@ void CGameControllerEXP::StopClient(int ID)
 	GameServer()->SaveRank(g_Config.m_SvMap, Server()->ClientName(ID), GameServer()->m_apPlayers[ID]->m_GameExp.m_Time, GameServer()->m_apPlayers[ID]->m_GameExp.m_Kills);
 	
 	bool GotFreezer = false;
-	if(GameServer()->m_apPlayers[ID]->m_GameExp.m_Weapons & (int)pow(2, (int)WEAPON_FREEZER))
+	if(GameServer()->m_apPlayers[ID]->m_GameExp.m_Weapons & (int)pow((int)2, (int)WEAPON_FREEZER))
 		GotFreezer = true;
 	
 	RestartClient(ID);
