@@ -18,7 +18,7 @@
 CGameControllerEXP::CGameControllerEXP(class CGameContext *pGameServer)
 : IGameController(pGameServer)
 {
-	m_pGameType = "EXP";
+	m_pGameType = "EXP-0.6";
 	m_GameFlags = GAMEFLAG_TEAMS|GAMEFLAG_FLAGS;
 
 	m_CurFlag = 0;
@@ -39,7 +39,7 @@ CGameControllerEXP::CGameControllerEXP(class CGameContext *pGameServer)
 		m_Boss.m_apShieldIcons[i] = NULL;
 
 	// force config
-	g_Config.m_SvMaxClients = 47;
+	g_Config.m_SvMaxClients = 32;
 	g_Config.m_SvScorelimit = 1;
 	g_Config.m_SvTeamdamage = 0;
 }
