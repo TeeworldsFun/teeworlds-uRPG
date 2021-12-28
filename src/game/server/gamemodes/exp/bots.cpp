@@ -10,14 +10,14 @@
 void CGameControllerEXP::TickBots()
 {
 	// REMOVE DEAD BOTS
-	for(int b = MAX_CLIENTS - MAX_BOT; b < MAX_BOT; b++)
+	for(int b = MAX_BOT - MAX_CLIENTS; b < MAX_BOT; b++)
 	{
 		if(GameServer()->m_apPlayers[b] && GameServer()->m_apPlayers[b]->m_MustRemoveBot)
 			RemoveBot(b, true);
 	}
 
 	// CHECK FOR NOBODY
-	for(int b = MAX_CLIENTS - MAX_BOT; b < MAX_BOT; b++)
+	for(int b = MAX_BOT - MAX_CLIENTS; b < MAX_BOT; b++)
 	{
 		CPlayer *p = GameServer()->m_apPlayers[b];
 		if(!p || !p->GetCharacter())
@@ -66,7 +66,7 @@ void CGameControllerEXP::TickBots()
 			if(Server()->Tick() < pSpawn->m_RespawnTimer + GameServer()->Tuning()->m_RespawnTimer*Server()->TickSpeed())
 				continue;
 			
-			for(int p = 0; p < MAX_CLIENTS - MAX_BOT; p++)
+			for(int p = 0; p < MAX_BOT - MAX_CLIENTS; p++)
 			{
 				if(!GameServer()->m_apPlayers[p] || !GameServer()->m_apPlayers[p]->GetCharacter())
 					continue;
