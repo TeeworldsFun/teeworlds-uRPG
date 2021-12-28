@@ -565,7 +565,7 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 void CGameControllerEXP::StartClient(int ID)
 {
 	GameServer()->m_apPlayers[ID]->KillCharacter(WEAPON_GAME);
-	CItems Items; Items.m_Lives = 0; Items.m_MinorPotions = 0; Items.m_GreaterPotions = 0;
+	CItems Items; Items.m_Lives = 1; Items.m_MinorPotions = 1; Items.m_GreaterPotions = 1;
 	GameServer()->m_apPlayers[ID]->LoadGame(m_aaSpawnPoints[1][0], 0, 0, 0, 0, 0, Items, false, false);
 	GameServer()->m_apPlayers[ID]->m_GameExp.m_EnterTick = Server()->Tick();
 	//SendItems(ID);
