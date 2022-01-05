@@ -414,7 +414,7 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 	}
 	else if(GameServer()->m_apPlayers[ClientID]->m_Language == LANG_CN)
 	{
-		if(!strncmp(aMsg, "/info", 5))
+		if(!strncmp(aMsg, "/info", 5) || !strncmp(aMsg, "/help", 5))
 		{
 			char aBuf[256] = {0};
 			GameServer()->SendChatTarget(ClientID, "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -481,8 +481,8 @@ bool CGameControllerEXP::CheckCommand(int ClientID, int Team, const char *aMsg)
 			{
 				if(GameServer()->m_apPlayers[ClientID]->m_GameExp.m_Weapons & (int)pow((int)2, i))
 				{
-					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "武器: %s", GetWeaponName(i));
-					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i));
+					if(aBuf[0] == 0) str_format(aBuf, sizeof(aBuf), "武器: %s", GetWeaponName(i, LANG_CN));
+					else str_format(aBuf, sizeof(aBuf), "%s, %s", aBuf, GetWeaponName(i, LANG_CN));
 				}
 			}
 			GameServer()->SendChatTarget(ClientID, aBuf);
@@ -605,10 +605,10 @@ void CGameControllerEXP::UpdateGame(int ID)
 	GameServer()->m_apPlayers[ID]->m_GameExp.m_Kills = GameServer()->m_apPlayers[ID]->m_Score;
 }
 
-const char *CGameControllerEXP::GetWeaponName(int WID)
+const char *CGameControllerEXP::GetWeaponName(int WID, int Language)
 {	
-	//if(GameServer()->m_apPlayers[-1]->m_Language == LANG_EN)
-	//{
+	if(Language == LANG_EN)
+	{
 		if(WID == WEAPON_HAMMER)
 			return "Hammer";
 		else if(WID == WEAPON_GUN)
@@ -626,8 +626,8 @@ const char *CGameControllerEXP::GetWeaponName(int WID)
 		else if(WID == WEAPON_FREEZER)
 			return "Freezer";
 		return "?";
-	//} 
-	/*else if(GameServer()->m_apPlayers[-1]->m_Language == LANG_CN)
+	}
+	else if(Language == LANG_CN)
 	{
 		if(WID == WEAPON_HAMMER)
 			return "锤子";
@@ -646,7 +646,7 @@ const char *CGameControllerEXP::GetWeaponName(int WID)
 		else if(WID == WEAPON_FREEZER)
 			return "传奇冰冻器";
 		return "?";
-	};*/
+	};
 }
 
 bool CGameControllerEXP::Use(int ClientID, const char *aCommand)

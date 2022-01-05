@@ -8,6 +8,7 @@
 #include <game/server/gamemodes/exp/exp.h>
 
 #include "pickup.h"
+#include <game/server/languages.h>
 
 CPickup::CPickup(CGameWorld *pGameWorld, int Type, int SubType)
 : CEntity(pGameWorld, CGameWorld::ENTTYPE_PICKUP)
@@ -108,7 +109,10 @@ void CPickup::Tick()
 					if(pPlayer->GetWeapon(m_Subtype) && !pPlayer->IsBot() && !(m_Subtype == WEAPON_RIFLE && (pPlayer->m_GameExp.m_Weapons & WEAPON_FREEZER)))
 					{
 						char aMsg[64];
-						str_format(aMsg, sizeof(aMsg), "Picked up: %s.", GetWeaponName(m_Subtype));
+						if(pPlayer->m_Language == LANG_EN)
+							str_format(aMsg, sizeof(aMsg), "Picked up: %s.", GetWeaponName(m_Subtype));
+						else if(pPlayer->m_Language == LANG_CN)
+							str_format(aMsg, sizeof(aMsg), "你捡起了一把%s.", GetWeaponName(m_Subtype, LANG_CN));
 						GameServer()->SendChatTarget(pPlayer->GetCID(), aMsg);
 
 						if(m_Subtype == WEAPON_GRENADE)
@@ -387,25 +391,48 @@ void CPickup::MakeBossShield()
 	}
 }
 
-const char *CPickup::GetWeaponName(int wid)
+const char *CPickup::GetWeaponName(int WID, int Language)
 {
-	if(wid == WEAPON_HAMMER)
-		return "HAMMER";
-	else if(wid == WEAPON_GUN)
-		return "GUN";
-	else if(wid == WEAPON_SHOTGUN)
-		return "SHOTGUN";
-	else if(wid == WEAPON_GRENADE)
-		return "GRENADE";
-	else if(wid == WEAPON_RIFLE)
-		return "LASER";
-	else if(wid == WEAPON_NINJA)
-		return "NINJA";
-	else if(wid == WEAPON_KAMIKAZE)
-		return "KAMIKAZE";
-	else if(wid == WEAPON_FREEZER)
-		return "FREEZER";
-	return "?";
+	if(Language == 1)
+	{
+		if(WID == WEAPON_HAMMER)
+			return "Hammer";
+		else if(WID == WEAPON_GUN)
+			return "Gun";
+		else if(WID == WEAPON_SHOTGUN)
+			return "Shotgun";
+		else if(WID == WEAPON_GRENADE)
+			return "Grenade";
+		else if(WID == WEAPON_RIFLE)
+			return "Rifle";
+		else if(WID == WEAPON_NINJA)
+			return "Ninja";
+		else if(WID == WEAPON_KAMIKAZE)
+			return "Kamikaze";
+		else if(WID == WEAPON_FREEZER)
+			return "Freezer";
+		return "?";
+	}
+	else if(Language == 1)
+	{
+		if(WID == WEAPON_HAMMER)
+			return "锤子";
+		else if(WID == WEAPON_GUN)
+			return "手枪";
+		else if(WID == WEAPON_SHOTGUN)
+			return "散弹枪";
+		else if(WID == WEAPON_GRENADE)
+			return "榴弹发射器";
+		else if(WID == WEAPON_RIFLE)
+			return "激光枪";
+		else if(WID == WEAPON_NINJA)
+			return "忍者";
+		else if(WID == WEAPON_KAMIKAZE)
+			return "神风牌武士刀";
+		else if(WID == WEAPON_FREEZER)
+			return "传奇冰冻器";
+		return "?";
+	};
 }
 
 int CPickup::RealPickup(int Type)

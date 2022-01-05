@@ -80,7 +80,7 @@ public:
 	void StopClient(int ID);
 	void RestartClient(int ID);
 
-	const char *GetWeaponName(int WID);
+	const char *GetWeaponName(int WID, int Language = 1);
 
 	bool Use(int ClientID, const char *aCommand);
 

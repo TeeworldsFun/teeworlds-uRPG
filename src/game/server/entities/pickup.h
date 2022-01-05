@@ -23,7 +23,7 @@ public:
 	float m_DieTimer;
 	bool m_IsBossShield;
 	
-	const char *GetWeaponName(int wid);
+	const char *GetWeaponName(int WID, int Language = 1);
 	int RealPickup(int Type);
 	int RealSubtype(int Type);
 	void CreateRandomFromBot(int lvl, vec2 Pos);

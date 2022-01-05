@@ -146,7 +146,7 @@ void CGameControllerEXP::TickBots()
 
 int CGameControllerEXP::BotCanSpawn()
 {
-	for(int p = g_Config.m_SvMaxClients; p < MAX_CLIENTS; p++)
+	for(int p = g_Config.m_SvMaxClients + 1; p < MAX_CLIENTS; p++)
 		if(!GameServer()->m_apPlayers[p]) return p;
 	return -1;
 }
