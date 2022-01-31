@@ -40,6 +40,8 @@ public:
 	class CGameContext *GameServer() { return m_pGameServer; }
 	class IServer *Server() { return m_pServer; }
 
+	void UpdatePlayerMaps();
+
 	bool m_ResetRequested;
 	bool m_Paused;
 	CWorldCore m_Core;

@@ -2,9 +2,12 @@
 /* If you are missing that file, acquire a complete release at teeworlds.com.                */
 #ifndef GAME_VERSION_H
 #define GAME_VERSION_H
+#ifndef NON_HASED_VERSION
 #include "generated/nethash.cpp"
 #define GAME_EXP_VERSION "1.0.1"
 #define GAME_VERSION "0.6.4, " GAME_EXP_VERSION
 #define GAME_NETVERSION "0.6 626fce9a778df4d4"
 static const char GAME_RELEASE_VERSION[8] = {'0', '.', '6', '.', '4', 0};
+
+#endif
 #endif

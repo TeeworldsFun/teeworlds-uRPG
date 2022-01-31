@@ -39,7 +39,7 @@ CGameControllerEXP::CGameControllerEXP(class CGameContext *pGameServer)
 		m_Boss.m_apShieldIcons[i] = NULL;
 
 	// force config
-	g_Config.m_SvMaxClients = 16;
+	g_Config.m_SvMaxClients = 64;
 	g_Config.m_SvScorelimit = 1;
 	g_Config.m_SvTeamdamage = 0;
 }
